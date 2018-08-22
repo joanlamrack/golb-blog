@@ -13,6 +13,7 @@ class ArticleController {
 				res.status(201).json(articleCreated);
 			})
 			.catch(err => {
+				console.log(err);
 				res.status(400).json(err);
 			});
 	}
@@ -74,7 +75,7 @@ class ArticleController {
 				res.status(200).json(updatedArticle);
 			})
 			.catch(err => {
-				res.status(200).json(err);
+				res.status(400).json(err);
 			});
 	}
 }

@@ -14,7 +14,6 @@ class UserController {
 				res.status(201).json(response);
 			})
 			.catch(err => {
-				console.log(err);
 				res.status(400).json({
 					error: err.message
 				});
@@ -22,24 +21,23 @@ class UserController {
 	}
 
 	static login(req, res) {
-		User.findOne({ email: req.body.email })
+		User.aggregate([{ $match: { email: req.body.email } }])
 			.then(userFound => {
-				if (userFound) {
-					let token = AuthHelper.createToken(userFound._id);
-					console.log("the token is", token, "containing", userFound._id);
+				if (userFound.length) {
+					let token = AuthHelper.createToken({ id: userFound._id });
 					res.status(200).json({
 						token: token
 					});
 				} else {
 					res.status(400).json({
-						message: "User not Found"
+						error: "user not found"
 					});
 				}
 			})
 			.catch(err => {
-				res.status(200).json({
-					message: err.message,
-					data: err
+				console.log(err);
+				res.status(400).json({
+					error: err.message
 				});
 			});
 	}

@@ -8,7 +8,7 @@ const logger = require("morgan");
 const indexroute = require("./routes/index");
 
 app.use(cors());
-app.use(logger("dev"));
+//app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

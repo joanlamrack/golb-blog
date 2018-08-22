@@ -6,14 +6,16 @@ let UserSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: true
+			required: true,
+			minlength:1
 		},
 		email: {
 			type: String,
 			required: true,
 			unique: true,
+			minlength:1,
 			match: [
-				/^\w+@([a-z]+\.)+[a-z]{2,3}$/gi,
+				/^\w+@([a-z]+\.)+[a-z]{2,3}$/,
 				"Please input a valid email format"
 			]
 		},
@@ -40,12 +42,18 @@ let UserSchema = new Schema(
 UserSchema.pre("save", function(next) {
 	if (this.isNew) {
 		let user = this;
-
 		let password = Authhelper.hashpass(user.email + user.password);
 		user.password = password;
-		user.save();
 	}
 	next();
+});
+
+UserSchema.post("save", function(error, doc, next) {
+	if (error.name === "MongoError" && error.code === 11000) {
+		next(new Error("email must be unique"));
+	} else {
+		next(error);
+	}
 });
 
 UserSchema.pre("remove", function(next) {

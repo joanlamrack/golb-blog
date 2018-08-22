@@ -9,19 +9,21 @@ let app = require("../app");
 
 describe("Users", () => {
 	describe("POST/register", () => {
-		afterEach(() => {
-			User.remove({})
+		afterEach(done => {
+			User.deleteMany({})
 				.then(() => {
 					done();
 				})
-				.catch(err => {});
+				.catch(err => {
+					console.log(err);
+				});
 		});
 
 		it("should return the created new User + encrypted password", done => {
 			let args = {
 				name: "eri",
 				email: "joanlamrack@gmail.com",
-				password: "123400000"
+				password: "12340000"
 			};
 
 			chai
@@ -77,7 +79,8 @@ describe("Users", () => {
 					done();
 				});
 		});
-		it("should return the created new User + encrypted password", done => {
+
+		it("should return fail since mail is ot unique", done => {
 			let args = {
 				name: "eri",
 				email: "joanlamrack@gmail.com",
@@ -94,13 +97,90 @@ describe("Users", () => {
 					expect(res.body.name).to.equal(args.name);
 					expect(res.body.password).to.not.equal(args.password);
 					expect(res.body.email).to.equal(args.email);
-					done();
+
+					chai
+						.request(app)
+						.post("/register")
+						.send(args)
+						.end((err, res) => {
+							expect(res).to.have.status(400);
+							expect(res.body).to.have.property("error");
+							expect(res.body.error).to.equal("email must be unique");
+							done();
+						});
 				});
 		});
 	});
 
 	describe("POST/login", () => {
-		it("should return user / password is wrong");
-		it("should return success message and token");
+		afterEach(done => {
+			User.deleteMany({})
+				.then(() => {
+					done();
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		});
+
+		it("should return user / password is wrong", done => {
+			let args = {
+				name: "eri",
+				email: "joanlamrack@gmail.com",
+				password: "123400000"
+			};
+
+			chai
+				.request(app)
+				.post("/register")
+				.send(args)
+				.end((err, res) => {
+					expect(res).to.have.status(201);
+					expect(res.body).to.be.a("object");
+					expect(res.body.name).to.equal(args.name);
+					expect(res.body.password).to.not.equal(args.password);
+					expect(res.body.email).to.equal(args.email);
+
+					chai
+						.request(app)
+						.post("/login")
+						.send({ email: "asdfa", password: "asdfsd" })
+						.end((err, res) => {
+							expect(res).to.have.status(400);
+							expect(res.body).to.have.property("error");
+							expect(res.body.error).to.equal("user not found");
+							done();
+						});
+				});
+		});
+		it("should return success message and token", done => {
+			let args = {
+				name: "eri",
+				email: "joanlamrack@gmail.com",
+				password: "123400000"
+			};
+
+			chai
+				.request(app)
+				.post("/register")
+				.send(args)
+				.end((err, res) => {
+					expect(res).to.have.status(201);
+					expect(res.body).to.be.a("object");
+					expect(res.body.name).to.equal(args.name);
+					expect(res.body.password).to.not.equal(args.password);
+					expect(res.body.email).to.equal(args.email);
+
+					chai
+						.request(app)
+						.post("/login")
+						.send({ email: args.email, password: args.email })
+						.end((err, res) => {
+							expect(res).to.have.status(200);
+							expect(res.body).to.have.property("token");
+							done();
+						});
+				});
+		});
 	});
 });
