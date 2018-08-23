@@ -6,7 +6,7 @@ let ArticleSchema = new Schema(
 		title: {
 			type: String,
 			required: true,
-			maxlength: [150, "Title cannot be more than 150 characters"]
+			maxlength: [100, "Title cannot be more than 100 characters"]
 		},
 		writer: {
 			type: Schema.Types.ObjectId,
@@ -26,25 +26,22 @@ let ArticleSchema = new Schema(
 	}
 );
 
-ArticleSchema.pre("remove", function(next) {
-	let article = this;
-
-	article
-		.model("User")
-		.update(
-			{ _id: article.writer },
-			{ $pull: { articles: { _id: article._id } } }
-		)
-		.then(response=>{
-			console.log(response);
-			next();
-		})
-		.catch(err=>{
-			res.status(400).json({
-				message:err.message,
-				data:err
-			})
-		})
-});
+// ArticleSchema.pre("remove", function(next) {
+// 	let article = this;
+// 	console.log("THIS IS FROM PRE REMOVE");
+// 	article
+// 		.model("User")
+// 		.update({ _id: article.writer }, { $pull: { articles: article._id } })
+// 		.then(response => {
+// 			console.log("Update response\n", response);
+// 			next();
+// 		})
+// 		.catch(err => {
+// 			res.status(400).json({
+// 				message: err.message,
+// 				data: err
+// 			});
+// 		});
+// });
 
 module.exports = mongoose.model("Article", ArticleSchema);

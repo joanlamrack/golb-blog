@@ -16,11 +16,13 @@ router
 	.delete(
 		AuthMiddleware.checkifTokenExist,
 		AuthMiddleware.checkifTokenValid,
+		AuthMiddleware.checkifArticleOwnedByUser,
 		ArticleController.deleteById
 	)
 	.patch(
 		AuthMiddleware.checkifTokenExist,
 		AuthMiddleware.checkifTokenValid,
+		AuthMiddleware.checkifArticleOwnedByUser,
 		ArticleController.updateById
 	)
 	.get(ArticleController.getById);

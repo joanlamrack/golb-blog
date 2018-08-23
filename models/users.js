@@ -63,7 +63,6 @@ UserSchema.pre("remove", function(next) {
 		.model("Article")
 		.remove({ _id: { $in: user.articles } })
 		.then(response => {
-			console.log(response);
 			next();
 		})
 		.catch(err => {

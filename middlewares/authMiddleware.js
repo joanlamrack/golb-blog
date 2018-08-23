@@ -1,5 +1,4 @@
 const User = require("../models/users");
-const Articles = require("../models/articles");
 const AuthHelper = require("../helpers/authhelper");
 
 class AuthMiddleware {
@@ -40,6 +39,24 @@ class AuthMiddleware {
 				error: error.message
 			});
 		}
+	}
+
+	static checkifArticleOwnedByUser(req, res, next) {
+		User.findOne({ _id: req.headers.userId, articles: req.params.id })
+			.then(userFound => {
+				if (userFound) {
+					next();
+				} else {
+					res.status(406).json({
+						error: "forbidden"
+					});
+				}
+			})
+			.catch(err => {
+				res.status(400).json({
+					error: err
+				});
+			});
 	}
 }
 
