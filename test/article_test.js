@@ -471,26 +471,26 @@ describe("Articles", () => {
 						.end((err, res) => {
 							expect(res).to.have.status(200);
 							let firstArticleIdToBeDeleted = res.body[0]._id;
-							console.log(
-								"Article id to be deleted",
-								firstArticleIdToBeDeleted
-							);
+							// console.log(
+							// 	"Article id to be deleted",
+							// 	firstArticleIdToBeDeleted
+							// );
 							chai
 								.request(app)
 								.delete(`/articles/${firstArticleIdToBeDeleted}`)
 								.set("token", token)
 								.end((err, res) => {
-									console.log(res.body);
+									// console.log(res.body);
 									expect(res.body).to.be.a("object");
 									expect(res.body).to.have.property("title");
 									expect(res.body).to.have.property("writer");
 									expect(res.body).to.have.property("content");
 
-									Article.find({})
-										.then(res => {
-											console.log("article found", res);
-										})
-										.catch();
+									// Article.find({})
+									// 	.then(res => {
+									// 		console.log("article found", res);
+									// 	})
+									// 	.catch();
 
 									User.findOne({
 										email: "joanlamrack@gmail.com",
@@ -606,10 +606,10 @@ describe("Articles", () => {
 						.end((err, res) => {
 							expect(res).to.have.status(200);
 							let firstArticleIdToBeUpdated = res.body[0]._id;
-							console.log(
-								"Article id to be updated",
-								firstArticleIdToBeUpdated
-							);
+							// console.log(
+							// 	"Article id to be updated",
+							// 	firstArticleIdToBeUpdated
+							// );
 							chai
 								.request(app)
 								.patch(`/articles/${firstArticleIdToBeUpdated}`)
@@ -654,10 +654,10 @@ describe("Articles", () => {
 						.end((err, res) => {
 							expect(res).to.have.status(200);
 							let firstArticleIdToBeUpdated = res.body[0]._id;
-							console.log(
-								"Article id to be updated",
-								firstArticleIdToBeUpdated
-							);
+							// console.log(
+							// 	"Article id to be updated",
+							// 	firstArticleIdToBeUpdated
+							// );
 							chai
 								.request(app)
 								.patch(`/articles/${firstArticleIdToBeUpdated}`)
@@ -700,10 +700,10 @@ describe("Articles", () => {
 						.end((err, res) => {
 							expect(res).to.have.status(200);
 							let firstArticleIdToBeUpdated = res.body[0]._id;
-							console.log(
-								"Article id to be updated",
-								firstArticleIdToBeUpdated
-							);
+							// console.log(
+							// 	"Article id to be updated",
+							// 	firstArticleIdToBeUpdated
+							// );
 							chai
 								.request(app)
 								.patch(`/articles/${firstArticleIdToBeUpdated}`)

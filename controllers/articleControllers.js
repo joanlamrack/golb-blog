@@ -43,7 +43,7 @@ class ArticleController {
 				}
 			})
 			.then(response => {
-				console.log("updated user", response);
+				// console.log("updated user", response);
 			})
 			.catch(err => {
 				res.status(200).json(err);
