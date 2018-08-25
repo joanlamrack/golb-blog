@@ -18,7 +18,8 @@ if (!process.env.NODE_ENV) {
 
 let DBurl = {
 	development: "mongodb://localhost:27017/golb-blog",
-	test: "mongodb://localhost:27017/golb-blog_test"
+	test: "mongodb://localhost:27017/golb-blog_test",
+	production: `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/golb-blog`
 };
 
 mongoose.connect(
