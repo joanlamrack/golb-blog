@@ -94,6 +94,7 @@ class ArticleController {
 
 	static getById(req, res) {
 		Article.findById(req.params.id)
+			.populate("writer")
 			.then(articleFound => {
 				if (articleFound) {
 					res.status(200).json(articleFound);
