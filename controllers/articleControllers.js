@@ -99,7 +99,7 @@ class ArticleController {
 					res.status(200).json(articleFound);
 				} else {
 					res.status(404).json({
-						message: "user not found"
+						message: "article not found"
 					});
 				}
 			})

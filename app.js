@@ -8,7 +8,7 @@ const logger = require("morgan");
 const indexroute = require("./routes/index");
 
 app.use(cors());
-//app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,7 +49,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-	console.log("Express connected!")
+	console.log("Express connected!");
 });
 
 module.exports = app;
