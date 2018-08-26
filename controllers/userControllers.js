@@ -22,9 +22,12 @@ class UserController {
 	}
 
 	static login(req, res) {
-		User.aggregate([{ $match: { email: req.body.email } }])
+		
+		User.aggregate([{ $match: { email: req.body.email} }])
 			.then(userFound => {
-				if (userFound.length) {
+				let passwordisRight = AuthHelper.comparehash(req.body.email+req.body.password, userFound[0].password);
+				if (userFound.length && passwordisRight) {
+					
 					let token = AuthHelper.createToken({
 						id: ObjectIdHelper.extractIdStringFromObj(userFound[0])
 					});
