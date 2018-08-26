@@ -93,7 +93,7 @@ class ArticleController {
 	}
 
 	static getById(req, res) {
-		Article.findById(req.params.articleID)
+		Article.findById(req.params.id)
 			.then(articleFound => {
 				if (articleFound) {
 					res.status(200).json(articleFound);
