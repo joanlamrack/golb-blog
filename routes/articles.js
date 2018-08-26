@@ -27,4 +27,7 @@ router
 	)
 	.get(ArticleController.getById);
 
+router.get("/me", AuthMiddleware.checkifTokenExist,
+		AuthMiddleware.checkifTokenValid,ArticleController.getUserOwnArticles)
+
 module.exports = router;
