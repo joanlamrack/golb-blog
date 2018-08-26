@@ -11,6 +11,13 @@ router
 		ArticleController.create
 	);
 
+router.get(
+	"/me",
+	AuthMiddleware.checkifTokenExist,
+	AuthMiddleware.checkifTokenValid,
+	ArticleController.getUserOwnArticles
+);
+
 router
 	.route("/:id")
 	.delete(
@@ -26,8 +33,5 @@ router
 		ArticleController.updateById
 	)
 	.get(ArticleController.getById);
-
-router.get("/me", AuthMiddleware.checkifTokenExist,
-		AuthMiddleware.checkifTokenValid,ArticleController.getUserOwnArticles)
 
 module.exports = router;
